@@ -73,6 +73,11 @@
             transform: translateY(-2px);
         }
 
+        .nav a.active {
+            background: #667eea;
+            color: white;
+        }
+
         main {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -195,10 +200,10 @@
             <h1>サンプルHTMLページ</h1>
             <p class="subtitle">モダンで美しいWebページのサンプル</p>
             <nav class="nav">
-                <a href="#home">ホーム</a>
+                <a href="index.html" class="active">ホーム</a>
                 <a href="#about">について</a>
                 <a href="#services">サービス</a>
-                <a href="#contact">お問い合わせ</a>
+                <a href="contact.html">お問い合わせ</a>
             </nav>
         </header>
 

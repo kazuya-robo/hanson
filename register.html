@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会員登録 - サンプルWEBページ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: #4a5568;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav a.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #667eea;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid #667eea;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .register-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .register-info {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .register-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .register-info h2,
+        .register-form h2 {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 10px;
+        }
+
+        .benefit-item .icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: #667eea;
+            min-width: 30px;
+        }
+
+        .benefit-item .info h3 {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-item .info p {
+            color: #718096;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #e53e3e;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-requirements {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .password-requirements ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .password-requirements li {
+            color: #718096;
+            padding: 0.25rem 0;
+        }
+
+        .password-requirements li::before {
+            content: "•";
+            margin-right: 0.5rem;
+            color: #667eea;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .checkbox-group label {
+            color: #4a5568;
+            font-weight: normal;
+        }
+
+        .checkbox-group a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+            color: #718096;
+        }
+
+        .login-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #4a5568;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .register-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>会員登録</h1>
+            <p class="subtitle">アカウントを作成して、さまざまな特典をご利用ください</p>
+            <nav class="nav">
+                <a href="index.html">ホーム</a>
+                <a href="#about">について</a>
+                <a href="#services">サービス</a>
+                <a href="contact.html">お問い合わせ</a>
+                <a href="register.html" class="active">会員登録</a>
+            </nav>
+        </header>
+
+        <a href="index.html" class="back-link">← ホームに戻る</a>
+
+        <div class="register-container">
+            <div class="register-info">
+                <h2>会員特典</h2>
+
+                <div class="benefit-item">
+                    <div class="icon">🎁</div>
+                    <div class="info">
+                        <h3>限定コンテンツ</h3>
+                        <p>会員限定の特別なコンテンツやキャンペーン情報をいち早くお届けします。</p>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="icon">💰</div>
+                    <div class="info">
+                        <h3>ポイント還元</h3>
+                        <p>ご利用金額に応じてポイントが貯まり、次回のお買い物で使用できます。</p>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="icon">📦</div>
+                    <div class="info">
+                        <h3>送料無料</h3>
+                        <p>会員様は一定金額以上のお買い物で送料が無料になります。</p>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="icon">🎂</div>
+                    <div class="info">
+                        <h3>バースデー特典</h3>
+                        <p>お誕生月には特別なクーポンをプレゼントいたします。</p>
+                    </div>
+                </div>
+
+                <div class="benefit-item">
+                    <div class="icon">📱</div>
+                    <div class="info">
+                        <h3>24時間サポート</h3>
+                        <p>会員専用のサポート窓口で、いつでもお問い合わせいただけます。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="register-form">
+                <h2>アカウント情報</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="username">お名前 *</label>
+                        <input type="text" id="username" name="username" required>
+                        <div class="error-message" id="usernameError">お名前を入力してください</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">メールアドレス *</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="error-message" id="emailError">有効なメールアドレスを入力してください</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">パスワード *</label>
+                        <input type="password" id="password" name="password" required>
+                        <div class="error-message" id="passwordError">パスワードは8文字以上で入力してください</div>
+                        <div class="password-requirements">
+                            <strong>パスワードの要件：</strong>
+                            <ul>
+                                <li>8文字以上</li>
+                                <li>英字と数字を含む</li>
+                                <li>大文字を含むことを推奨</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">パスワード（確認） *</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <div class="error-message" id="confirmPasswordError">パスワードが一致しません</div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">
+                            <a href="#" target="_blank">利用規約</a>と<a href="#" target="_blank">プライバシーポリシー</a>に同意します *
+                        </label>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="newsletter" name="newsletter">
+                        <label for="newsletter">
+                            メールマガジンを受け取る（お得な情報をお届けします）
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn">登録する</button>
+
+                    <div class="login-link">
+                        既にアカウントをお持ちの方は<a href="#login">ログイン</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 サンプルHTMLページ. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" title="Twitter">🐦</a>
+                <a href="#" title="GitHub">🐙</a>
+                <a href="#" title="LinkedIn">💼</a>
+                <a href="#" title="Email">📧</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('registerForm');
+            const username = document.getElementById('username');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const terms = document.getElementById('terms');
+
+            // バリデーション関数
+            function validateUsername() {
+                if (username.value.trim() === '') {
+                    showError(username, 'usernameError');
+                    return false;
+                } else {
+                    hideError(username, 'usernameError');
+                    return true;
+                }
+            }
+
+            function validateEmail() {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email.value)) {
+                    showError(email, 'emailError');
+                    return false;
+                } else {
+                    hideError(email, 'emailError');
+                    return true;
+                }
+            }
+
+            function validatePassword() {
+                if (password.value.length < 8) {
+                    showError(password, 'passwordError');
+                    return false;
+                } else {
+                    hideError(password, 'passwordError');
+                    return true;
+                }
+            }
+
+            function validateConfirmPassword() {
+                if (password.value !== confirmPassword.value) {
+                    showError(confirmPassword, 'confirmPasswordError');
+                    return false;
+                } else {
+                    hideError(confirmPassword, 'confirmPasswordError');
+                    return true;
+                }
+            }
+
+            function showError(input, errorId) {
+                input.classList.add('error');
+                document.getElementById(errorId).classList.add('show');
+            }
+
+            function hideError(input, errorId) {
+                input.classList.remove('error');
+                document.getElementById(errorId).classList.remove('show');
+            }
+
+            // リアルタイムバリデーション
+            username.addEventListener('blur', validateUsername);
+            email.addEventListener('blur', validateEmail);
+            password.addEventListener('blur', validatePassword);
+            confirmPassword.addEventListener('blur', validateConfirmPassword);
+
+            // フォーム送信
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // すべてのフィールドをバリデーション
+                const isUsernameValid = validateUsername();
+                const isEmailValid = validateEmail();
+                const isPasswordValid = validatePassword();
+                const isConfirmPasswordValid = validateConfirmPassword();
+
+                // 利用規約チェック
+                if (!terms.checked) {
+                    alert('利用規約とプライバシーポリシーに同意してください。');
+                    return;
+                }
+
+                // すべてのバリデーションが通ったら送信
+                if (isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+                    // フォームデータを取得
+                    const formData = new FormData(form);
+                    const data = Object.fromEntries(formData);
+
+                    // 実際の実装ではサーバーに送信
+                    console.log('登録データ:', data);
+
+                    alert('会員登録が完了しました！\nご登録いただいたメールアドレスに確認メールを送信しました。');
+
+                    // フォームをリセット
+                    form.reset();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
